@@ -8,7 +8,7 @@
 </head>
 <body>
 	<% 
-		session.invalidate(); // ¸ðµç¼¼¼ÇÁ¤º¸ »èÁ¦
+		session.invalidate(); // ëª¨ë“ ì„¸ì…˜ì •ë³´ ì‚­ì œ
     	response.sendRedirect("./index.jsp");
 	%>
 </body>
