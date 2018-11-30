@@ -1,14 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
- <%@ page import='DB.DB_conn' %>	
- <%@ page language="java" import="java.sql.*"  %>
- <%
- 
-    request.setCharacterEncoding("UTF-8");
- 
-%>
 	
+ <%@ page language="java" import="java.sql.*"  %>
+ <%@ page import="DB.DB_conn" %>
+ <%@ page import="java.util.ArrayList" %>
+ <%@ page import="Data.searchData" %>
+ <%
+    request.setCharacterEncoding("UTF-8");
+%>
+<script language='javascript'>
+	function lental(bid) {
+		location.href = "./RentalReturn.jsp?flag=0&bid=" + bid;
+	}
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +57,7 @@
 			</button>
 			<div class="menu-logo">
 				<div class="navbar-brand">
-					<span class="navbar-logo"> <a href="http://www.knu.ac.kr">
+					<span class="navbar-logo"> <a href="./index.jsp">
 							<img src="assets/images/16-3-463x124.jpg" alt="Mobirise" title=""
 							style="height: 3.8rem;">
 					</a>
@@ -60,6 +65,20 @@
 
 				</div>
 			</div>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    	<% if(session.getAttribute("userID") == null) {%>
+				<div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="login.jsp"><span class="mbri-users mbr-iconfont mbr-iconfont-btn"></span>로그인</a></div>
+			<%} 
+			else {%>
+				<h2>
+	 			<font color="blue"><%=session.getAttribute("userID") %></font>
+       			<font color="black"> 님 로그인되었습니다.</font>
+				</h2>
+    			<div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="logoutPro.jsp"><span class="mbri-users mbr-iconfont mbr-iconfont-btn"></span>로그아웃</a></div>
+    			<div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="myPage.jsp"><span class="mbri-users mbr-iconfont mbr-iconfont-btn"></span>대여목록</a></div>
+    	<%} %>    
+            
+        </div>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav nav-dropdown" data-app-modern-menu="true">
 					<li class="nav-item"><a
@@ -142,6 +161,7 @@
 						<th>출판년도</th>
 						<th>위치</th>
 						<th>재고</th>
+						<th>대여</th>
 					</tr>
 				</thead>
 				<tbody class="panel">
@@ -171,112 +191,53 @@
 						<td>2</td>
 					</tr>
 					-->
-<%
-String url = "jdbc:oracle:thin:@localhost:1521:oraknu";
-String user = "project";
-String pass = "project";
-Connection conn = null;
-String sql = null;
-ResultSet rs;
-PreparedStatement pstmt = null;
-
-try {
-	Class.forName("oracle.jdbc.driver.OracleDriver");
-	//System.out.println("드라이버 검색 성공!");
-} 
-catch (ClassNotFoundException e) {
-	System.err.println("error = " + e.getMessage());
-	System.exit(1);
-}
-try {
-	conn = DriverManager.getConnection(url, user, pass);
-} 
-catch (SQLException e) {
-	System.err.println("sql error = " + e.getMessage());
-	System.exit(1);
-}
-
-try {
-conn.setAutoCommit(false);
-
-Statement stmt = conn.createStatement();
-request.setCharacterEncoding("utf-8");
-
-int counter = 0;
-
-String name = request.getParameter("name");
-String filter = request.getParameter("filter");
-System.out.println(name);
-System.out.println(filter);
-
-//sql = "select * from emp";
-
-if(filter.equals("1") )
-{
-	sql = "select b.book_name, b.author, b.publisher, b.publication_year,b.contents,  l.location_name,b.stock, a.appendix_type, a.name from ((select book_name, contents,author, publisher, stock,publication_year, location_id, appendix_id from book where book_name LIKE '%" + name + "%')b left outer join location l on b.location_id=l.location_id) left outer join appendix a on b.appendix_id=a.appendix_id";
-}
-else if(filter.equals("2"))
-{
-	sql = "select b.book_name, b.author, b.publisher, b.publication_year,b.contents, l.location_name, b.stock, a.appendix_type, a.name from ((select book_name, contents,author, publisher, stock, publication_year,location_id, appendix_id from book where author LIKE '%" + name + "%')b left outer join location l on b.location_id=l.location_id) left outer join appendix a on b.appendix_id=a.appendix_id";
-}
-else if(filter.equals("3"))
-{
-	sql = "select b.book_name, b.author, b.publisher, b.publication_year,b.contents, l.location_name, b.stock, a.appendix_type, a.name from ((select book_name, contents,author, publisher, stock, publication_year,location_id, appendix_id from book where publisher LIKE '%" + name + "%')b left outer join location l on b.location_id=l.location_id) left outer join appendix a on b.appendix_id=a.appendix_id";
-}
-//sql = select b.book_name, b.author, b.publisher, b.stock, l.location_name, a.appendix_type, a.name
-//from ((select book_name, author, publisher, stock, location_id, appendix_id from book where author='기욤 뮈소')b left outer join location l on b.location_id=l.location_id) left outer join appendix a on b.appendix_id=a.appendix_id;
-
-//result = stmt.executeUpdate(sql);
-pstmt = conn.prepareStatement(sql);
-rs = pstmt.executeQuery();
-
-while(rs.next())
-{
-	counter++;
-	String book_name = rs.getString("book_name");
-	String author = rs.getString("author");
-	String publisher = rs.getString("publisher");
-	String publication_year = rs.getString("publication_year");
-	String contents = rs.getString("contents");
-	String location_name = rs.getString("location_name");
-	String stock = rs.getString("stock");
-	String appendix_type = rs.getString("appendix_type");
-	String appendix_name = rs.getString("name");
-%>
-					<tr data-toggle="collapse" data-target="#demo<%=counter%>"
+				<%
+				String filter = request.getParameter("filter");
+				String name = request.getParameter("name");
+				DB_conn db = new DB_conn();
+				ArrayList<searchData> result = db.search(filter, name);
+				
+				if(filter != null && name != null) {
+					for(int i = 0; i < result.size(); i++) { 
+						int cnt = i + 1;
+						String bid = '"' + result.get(i).getbook_id() + '"';%>
+						<tr data-toggle="collapse" data-target="#demo<%=i%>"
 						data-parent="#resultTable">
-						<td><%=counter%></td>
-						<td><%=book_name%></td>
-						<td><%=author%></td>
-						<td><%=publication_year%></td>
-						<td><%=location_name%></td>
-						<td><%=stock%></td>
-						<td><input type='button' name='value'></td>
+						<td><%=cnt%></td>
+						<td><%=result.get(i).getbook_name()%></td>
+						<td><%=result.get(i).getauthor()%></td>
+						<td><%=result.get(i).getpublication_year()%></td>
+						<td><%=result.get(i).getlocation_name()%></td>
+						<td><%=result.get(i).getstock()%></td>
+						<td><input type='button' value='대여' onclick='lental(<%=bid%>)'></td>
 					</tr>
-					<tr id="demo<%=counter%>" class="collapse">
+					<tr id="demo<%=i%>" class="collapse">
 						<td colspan="6" class="hiddenRow">
-							<div>책 추가 정보<br>출판사 : <%=publisher%>
-							<br>책 소개 : <%=contents%>
-							<br>부록 종류 : <%=appendix_type%>
-							<br>부록 이름 : <%=appendix_name%></div>
+							<div>책 추가 정보<br>출판사 : <%=result.get(i).getpublisher()%>
+							<br>책 소개 : <%=result.get(i).getcontents()%>
+							<br><%=result.get(i).getappendix_type()%>
+							<br><%=result.get(i).getappendix_name()%></div>
 						</td>
 					</tr>
-<%	
-}
-conn.commit();
-conn.setAutoCommit(true);
-stmt.close();
-conn.close();
-} catch (Exception e) {
-System.err.println("sql error = " + e.getMessage());
-}
-%>
+					<%}
+				}		
+				%>
 				</tbody>
 			</table>
 		</div>
 
 	</section>
+	<%
+    String msg=request.getParameter("msg");
 
+    if(msg != null && msg.equals("notlogin") == true) {%>
+    	<script>alert("로그인을 먼저 하십시오.")
+    	location.href = "./login.jsp"</script>
+    <%}
+    else if(msg != null && msg.equals("rentalsuccess") == true) {%>
+    	<script>alert("정상적으로 대여가 되었습니다.")</script>
+    <%} %>
+	
 
 	<script src="assets/web/assets/jquery/jquery.min.js"></script>
 	<script src="assets/popper/popper.min.js"></script>
