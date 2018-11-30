@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%@ page import="DB.DB_conn" %>
+<%@ page import="DB.DB" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,14 +20,14 @@
 			msg = "./search.jsp?msg=notlogin";			
 		}
 		else {
-			DB_conn db = new DB_conn();
+			DB db = new DB();
 			db.rental((String)session.getAttribute("userID"), bid);
 			msg = "./search.jsp?msg=rentalsuccess";
 		}
 	}
 	else {
 		//flag = 1은 반납의 경우
-		DB_conn db = new DB_conn();
+		DB db = new DB();
 		db.returnto((String)session.getAttribute("userID"), bid);
 		msg = "./myPage.jsp?msg=returnsuccess";
 	}
