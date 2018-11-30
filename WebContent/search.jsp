@@ -3,7 +3,7 @@
 	
 	
  <%@ page language="java" import="java.sql.*"  %>
- <%@ page import="DB.DB_conn" %>
+ <%@ page import="DB.DB" %>
  <%@ page import="java.util.ArrayList" %>
  <%@ page import="Data.searchData" %>
  <%
@@ -194,7 +194,7 @@
 				<%
 				String filter = request.getParameter("filter");
 				String name = request.getParameter("name");
-				DB_conn db = new DB_conn();
+				DB db = new DB();
 				ArrayList<searchData> result = db.search(filter, name);
 				
 				if(filter != null && name != null) {
