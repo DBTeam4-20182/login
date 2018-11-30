@@ -15,7 +15,7 @@ public class DB_conn {
 	private Connection conn = null;
 	private String sql = null;
 	
-	public void DB_connect() {
+	public void DB() {
 		//DB연결
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
