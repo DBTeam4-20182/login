@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%@ page import='DB.DB_conn' %>
+<%@ page import='DB.DB' %>
 <%@ page import='Data.rentalData' %>
 <%@ page import='java.util.ArrayList' %>
 
@@ -147,7 +147,7 @@
             </thead>
 			<tbody class="panel">
             <%
-				DB_conn db = new DB_conn();
+				DB db = new DB();
 				ArrayList<rentalData> result = db.searchRental((String)session.getAttribute("userID"));
 				
 				if(result.size() > 0) {
