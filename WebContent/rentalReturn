@@ -9,30 +9,30 @@
 </head>
 <body>
 	<%
-	String flag = request.getParameter("flag");
-	String bid = request.getParameter("bid");
-	String msg ="";
-	
-	if(flag.equals("0")) {
-		//flag = 0은 대여의 경우
-		if(session.getAttribute("userID") == null) {
-			System.out.println(session.getAttribute("userID"));
-			msg = "./search.jsp?msg=notlogin";			
+		String flag = request.getParameter("flag");
+		String bid = request.getParameter("bid");
+		String msg ="";
+		
+		if(flag.equals("0")) {
+			//flag = 0은 대여의 경우
+			if(session.getAttribute("userID") == null) {
+		System.out.println(session.getAttribute("userID"));
+		msg = "./search.jsp?msg=notlogin";			
+			}
+			else {
+		DB db = new DB();
+		db.rental((String)session.getAttribute("userID"), bid);
+		msg = "./search.jsp?msg=rentalsuccess";
+			}
 		}
 		else {
+			//flag = 1은 반납의 경우
 			DB db = new DB();
-			db.rental((String)session.getAttribute("userID"), bid);
-			msg = "./search.jsp?msg=rentalsuccess";
+			db.returnto((String)session.getAttribute("userID"), bid);
+			msg = "./myPage.jsp?msg=returnsuccess";
 		}
-	}
-	else {
-		//flag = 1은 반납의 경우
-		DB db = new DB();
-		db.returnto((String)session.getAttribute("userID"), bid);
-		msg = "./myPage.jsp?msg=returnsuccess";
-	}
-	
-	response.sendRedirect(msg);
+		
+		response.sendRedirect(msg);
 	%>
 </body>
 </html>
