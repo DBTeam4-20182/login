@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-
-<script language='javascript'>
-	function logout() {
-		location.href = "http://localhost:8080/DB_Project/logoutPro.jsp";
-	}
-</script>
+<!DOCTYPE html>
 <html >
 <head>
   <!-- Site made with Mobirise Website Builder v4.8.7, https://mobirise.com -->
@@ -13,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="generator" content="Mobirise v4.8.7, mobirise.com">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-  <link rel="shortcut icon" href="assets/images/16-3-463x124.jpg" type="image/x-icon">
+  <link rel="shortcut icon" href="assets/images/title_logo.jpg" type="image/x-icon">
   <meta name="description" content="">
   <title>Home</title>
   <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
@@ -26,7 +21,6 @@
   <link rel="stylesheet" href="assets/theme/css/style.css">
   <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
     
-  
 </head>
 <body>
 <section class="menu cid-raFTFy3Zrx" once="menu" id="menu2-t">
@@ -42,24 +36,24 @@
         <div class="menu-logo">
             <div class="navbar-brand">
                 <span class="navbar-logo">
-                    <a href="http://www.knu.ac.kr">
-                        <img src="assets/images/16-3-463x124.jpg" alt="Mobirise" title="" style="height: 3.8rem;">
+                    <a href="index.jsp">
+                        <img src="assets/images/16-3-463x124.jpg" title="" style="height: 3.8rem;">
                     </a>
                 </span>
 
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    	<% if(session.getAttribute("sessionID") == null) {%>
-				<div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="login.jsp"><span class="mbri-users mbr-iconfont mbr-iconfont-btn"></span>Login</a></div>
+	    	<% if(session.getAttribute("userID") == null) {%>
+				<div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="login.jsp"><span class="mbri-users mbr-iconfont mbr-iconfont-btn"></span>로그인</a></div>
 			<%} 
 			else {%>
 				<h2>
-	 			<font color="blue"><%=session.getAttribute("sessionID") %></font>
-       			<font color="white"> �� �α��εǾ����ϴ�.</font>
+	 			<font color="blue"><%=session.getAttribute("userID") %></font>
+       			<font color="white"> 님 로그인되었습니다.</font>
 				</h2>
-				<br>
-    			<input type="button" value="�α׾ƿ�" onclick="logout()" />
+    			<div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="logoutPro.jsp"><span class="mbri-users mbr-iconfont mbr-iconfont-btn"></span>로그아웃</a></div>
+    			<div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="myPage.jsp"><span class="mbri-users mbr-iconfont mbr-iconfont-btn"></span>대여목록</a></div>
     	<%} %>    
             
         </div>
@@ -72,10 +66,10 @@
     <div class="container align-center">
         <div class="row">
             <div class="mbr-white col-lg-12 col-md-11 center-block" >
-                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1">
-                    ��ϴ��б� ������</h1>
+                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1" style="text-align:center">
+                    경북대학교 도서관</h1>
                 <p class="mbr-text pb-3 mbr-fonts-style display-5">
-                    KNU Library Service<br>���� Ŭ���ϰ� �̷��� ��ġ�ϴ�<br>��ϴ��б� �������� ���� ���� ȯ���մϴ�</p>
+                    KNU Library Service<br>꿈을 클릭하고 미래를 터치하는<br>경북대학교 도서관에 오신 것을 환영합니다</p>
             </div>
         </div>
     </div>
@@ -91,10 +85,10 @@
         <div class="row justify-content-center">
             <div class="title col-12 col-lg-8 ">
                 <h2 class="align-center pb-2 mbr-fonts-style display-2">
-                    ���� �˻�
+                    소장 검색
                 </h2>
                 <h3 class="mbr-section-subtitle align-center pb-5 mbr-light mbr-fonts-style display-5">
-                    �����ڷ� ���հ˻� �� �����ڿ� �˻�
+                    소장자료 통합검색 및 전자자원 검색
                 </h3>
             </div>
         </div>
@@ -105,13 +99,13 @@
                         <div style="padding-left:0px; padding-right:0px" >
                             <select id="search" class="selectpicker form-control" style="width:150px; background-color:#ffffff" name="filter">
                             
-                            <option value="1">������</option>
-                            <option value="2">����</option>
-                            <option value="3">���ǻ�</option>
+                            <option value="1">도서명</option>
+                            <option value="2">저자</option>
+                            <option value="3">출판사</option>
                             </select>
                         </div>
-                        <input class="form-control" type="text" name="name" placeholder="�����ڷ� �˻�">
-                        <span class="input-group-btn"><button href="" type="submit" class="btn btn-primary display-4">�˻�</button></span>
+                        <input class="form-control" type="text" name="name" placeholder="소장자료 검색">
+                        <span class="input-group-btn"><button href="" type="submit" class="btn btn-primary display-4">검색</button></span>
                     </div>
             </div>
         </div>
@@ -131,7 +125,7 @@
                 <p class="mbr-text" >
                     <strong>Address</strong>
                     <br>
-                    <br>(��)41566 <br>�뱸������ �ϱ� ���з�80(��ݵ� 1370) ��ϴ��б� ������<br>
+                    <br>(우)41566 <br>대구광역시 북구 대학로80(산격동 1370) 경북대학교 도서관<br>
                     <br>
                     <br><strong>Contacts</strong>
                     <br>
